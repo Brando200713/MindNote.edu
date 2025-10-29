@@ -1,49 +1,31 @@
-import TodoItem from "./TodoItem"
-import { useState } from "react"
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Navbar from "./componentes/Navbar";
+import Home from "./componentes/Home";
+import Login from "./componentes/Login";
+import Register from "./componentes/Register";
+import Notas from "./componentes/Notas";
+import Footer from "./componentes/Footer";
+import AccessibilityPanel from "./componentes/AccessibilityPanel";
+import Admin from "./componentes/Admin";
 
-export default function App() {
-
-  const [tareas, setTareas] = useState([]);
-
-  const [input, setInput] = useState("");
-
-
-  const   agregarTarea = () => {
-
-    if (input.trim()) {
-      setTareas([...tareas, { id: Date.now(), text: input.trim(), completed: false }]);
-      setInput("");
-    };
-
-  }
-
-
-  const toggleCompleted = (id) => {
-    setTareas(
-      tareas.map((tarea) =>
-        tarea.id === id ? { ...tarea, completed: !tarea.completed } : tarea
-      )
-    );
-  };
-
-
-  const eliminarTarea = (id) => {
-    setTareas(tareas.filter((tarea) => tarea.id !== id));
-
-  }
-
+function App() {
   return (
-    <div className="max-w-md mx-auto mt-10 p-2  rounded shadow">
-      <h1 className="text-3xl font-bold mb-5 text-center">TAREAS TOÑO</h1>
-      <div className="flex gap-3 mb-5">
-        <input className="flex-1 p-2 border rounded" type="text" value={input} onChange={(e) => setInput(e.target.value)} placeholder="Añadir Tarea" />
-        <button className="bg-blue-500 text-white px-4 p-y-2 rounded" onClick={agregarTarea} >Añadir Tareas</button>
-      </div>
-
-      <div className="space-y-2 ">
-        {tareas.map((tarea) => (<TodoItem key={tarea.id} tarea={tarea} toggleCompleted={toggleCompleted} eliminarTarea={eliminarTarea} />))}
-      </div>
-
-    </div>
-  )
+    // 👇 Esto es lo importante
+    <Router basename="/MindNote.edu">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/notas" element={<Notas />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<Admin />} />
+      </Routes>
+      <Footer />
+      {/* 🔥 Panel de accesibilidad GLOBAL */}
+      <AccessibilityPanel />
+    </Router>
+  );
 }
+
+export default App;
